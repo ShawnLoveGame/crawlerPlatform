@@ -3,26 +3,48 @@
 #author@shibin
 
 #
-#import optparse???
+#
 import sys
+from optparse import OptionParser 
 
+
+def getoptparse():
+	parser = OptionParser() 
+	parser.add_option("-A","--source-A",action="store",
+		dest="soureApath", 
+		default="", 
+		help="soureApath")
+	parser.add_option("-B","--source-B",action="store",
+		dest="soureBpath", 
+		default="", 
+		help="soureBpath")
+	parser.add_option("-x","--xor",action="store",
+		dest="xorpath", 
+		default="", 
+		help="xorpath")
+	parser.add_option("-a","--and",action="store",
+		dest="andpath", 
+		default="", 
+		help="andpath")
+	parser.add_option("--A-B",action="store",
+		dest="A_Bpath", 
+		default="", 
+		help="A_Bpath")
+	parser.add_option("--B-A",action="store",
+		dest="B_Apath", 
+		default="", 
+		help="B_Apath")
+	return parser
 
 def read_A(f):
 	for line in f:
-		#return False,line.strip()
 		return False,int(line.strip())
 	return True,None
 
 def read_B(f):
 	for line in f:
-		#return False,line.strip()
 		return False,int(line.strip())
 	return True,None
-
-def make_Aresult(a):
-	return str(a)+'\n'
-def make_Bresult(b):
-	return str(b)+'\n'
 
 def compare(a,b):
 	if a==b:
@@ -36,18 +58,18 @@ def write(result,write_types,output_types,outputs):
 				outputs[i].write(result)
 
 def write_Asmall(a,output_types,outputs):
-	result=make_Aresult(a)
+	result=str(a)+'\n'
 	write_types=(True,None,True,None)
 	write(result,write_types,output_types,outputs)
 
 def write_Bsmall(b,output_types,outputs):
-	result=make_Bresult(b)
+	result=str(b)+'\n'
 	write_types=(True,None,None,True)
 	write(result,write_types,output_types,outputs)
 
 def write_equal(a,output_types,outputs):
 	#means equal
-	result=make_Aresult(a)
+	result=str(a)+'\n'
 	write_types=(None,True,None,None)
 	write(result,write_types,output_types,outputs)
 
@@ -143,48 +165,43 @@ def main(f_a,f_b,output_types,f_outputs):
 
 
 if __name__=="__main__":
-	f_a=sys.argv[2]
-	f_b=sys.argv[3]
-	#--------------
-	#wait me to add optparse
-	#.......
-	if sys.argv[1]=="--xor":
-		#异或
-		#A xor B
-		xor_out=sys.argv[4]
-		output_types=(True,None,None,None)
-		f_outputs=(xor_out,None,None,None)
-	if sys.argv[1]=="--and":
-		#A and B
-		and_out=sys.argv[4]
-		output_types=(None,True,None,None)
-		f_outputs=(None,and_out,None,None)
-	if sys.argv[1]=="--A-B":
-		#A-B		
-		xor_aout=sys.argv[4]
-		output_types=(None,None,True,None)
-		f_outputs=(None,None,xor_aout,None)
-	if sys.argv[1]=="--B-A":
-		#B-A
-		xor_bout=sys.argv[4]
-		output_types=(None,None,None,True)
-		f_outputs=(None,None,None,xor_bout)
-	if sys.argv[1]=="--xor--and":
-		#xor and
-		xor_out=sys.argv[4]
-		and_out=sys.argv[5]
-		output_types=(True,True,None,None)
-		f_outputs=(xor_out,and_out,None,None)
-	if sys.argv[1]=="--xor--B-A--A-B":
-		xor_aout=sys.argv[4]
-		xor_bout=sys.argv[5]
-		output_types=(None,None,True,True)
-		f_outputs=(None,None,xor_aout,xor_bout)
-	if sys.argv[1]=="--xor--B-A--A-B--and":
-		xor_aout=sys.argv[4]
-		xor_bout=sys.argv[5]
-		and_out=sys.argv[6]
-		output_types=(None,True,True,True)
-		f_outputs=(None,xor_aout,xor_bout,and_out)
+	parser=getoptparse()
+	(options, args) = parser.parse_args()
+	f_a=options.soureApath
+	f_b=options.soureBpath
+
+	output_types=[]
+	f_outputs=[]
+	#xor
+	if options.xorpath!="":
+		output_types.append(True)
+		f_outputs.append(options.xorpath)
+	else:
+		output_types.append(None)
+		f_outputs.append(None)
+
+	#and
+	if options.andpath!="":
+		output_types.append(True)
+		f_outputs.append(options.andpath)
+	else:
+		output_types.append(None)
+		f_outputs.append(None)
+
+	#A-B
+	if options.A_Bpath!="":
+		output_types.append(True)
+		f_outputs.append(options.A_Bpath)
+	else:
+		output_types.append(None)
+		f_outputs.append(None)
+
+	#B-A
+	if options.B_Apath!="":
+		output_types.append(True)
+		f_outputs.append(options.B_Apath)
+	else:
+		output_types.append(None)
+		f_outputs.append(None)
 
 	main(f_a,f_b,output_types,f_outputs)
