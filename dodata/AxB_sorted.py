@@ -38,12 +38,12 @@ def getoptparse():
 
 def read_A(f):
 	for line in f:
-		return False,int(line.strip())
+		return False,line.strip()
 	return True,None
 
 def read_B(f):
 	for line in f:
-		return False,int(line.strip())
+		return False,line.strip()
 	return True,None
 
 def compare(a,b):
@@ -58,18 +58,18 @@ def write(result,write_types,output_types,outputs):
 				outputs[i].write(result)
 
 def write_Asmall(a,output_types,outputs):
-	result=str(a)+'\n'
+	result=a+'\n'
 	write_types=(True,None,True,None)
 	write(result,write_types,output_types,outputs)
 
 def write_Bsmall(b,output_types,outputs):
-	result=str(b)+'\n'
+	result=b+'\n'
 	write_types=(True,None,None,True)
 	write(result,write_types,output_types,outputs)
 
 def write_equal(a,output_types,outputs):
 	#means equal
-	result=str(a)+'\n'
+	result=a+'\n'
 	write_types=(None,True,None,None)
 	write(result,write_types,output_types,outputs)
 
