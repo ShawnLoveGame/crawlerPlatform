@@ -23,9 +23,9 @@ def show_pixel(im):
         for i in range(0, col):
             pixel = im.getpixel((i, j))
             if pixel[1] <200:
-                sys.stdout.write('0')
+                sys.stdout.write(' ')
             else:
-                sys.stdout.write('1')
+                sys.stdout.write('M')
         sys.stdout.write('\n')
 #----------------------------------------------------------------------
 def show_split_pixel(im,xs,xe,ys,ye):
@@ -33,9 +33,9 @@ def show_split_pixel(im,xs,xe,ys,ye):
         for i in range(ys, ye):
             pixel = im.getpixel((i, j))
             if pixel[1] < 200:
-                sys.stdout.write('0')
+                sys.stdout.write(' ')
             else:
-                sys.stdout.write('1')
+                sys.stdout.write('M')
         sys.stdout.write('\n')
 #----------------------------------------------------------------------    
 def findColBorder(sequence):

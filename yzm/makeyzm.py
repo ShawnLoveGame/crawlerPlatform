@@ -8,7 +8,7 @@ import threading
 import webbrowser
 import Image
 #import yzm
-from yzm import splitimg4
+from yzm import splitimg4,show_pixel
 
 test_dir='./test_data/'
 result_dir='./IMG/'
@@ -47,7 +47,9 @@ def rename(path_dir,file_name,rename_dir):
         if len(char_dict.keys())==char_count:
             return
     fpath=path_dir+file_name
-    showimg(fpath).start()
+    #showimg(fpath).start()
+    im=Image.open(fpath)
+    show_pixel(im)
 
     codevalue=raw_input('codevalue(str):')
     if codevalue=='':
@@ -57,7 +59,6 @@ def rename(path_dir,file_name,rename_dir):
     if char_dict[codevalue]>char_max:
         return 
     renamepath=rename_dir+codevalue+'_'+str(char_dict[codevalue])+'.jpg'
-    im=Image.open(fpath)
     im.save(renamepath)
     char_dict[codevalue]+=1
     return
@@ -65,7 +66,8 @@ def rename(path_dir,file_name,rename_dir):
 if __name__ == '__main__':
     #0-9
     char_count=10
-    char_max=10
+    #K-means
+    char_max=7
     #split----
     resultfile_list = listdir(result_dir)#iterate through the test set
     for filenamestr in resultfile_list:
@@ -77,6 +79,7 @@ if __name__ == '__main__':
         rename(split_dir,filenamestr,training_dir)
 
     #
+
 
 
 

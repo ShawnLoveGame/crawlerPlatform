@@ -17,7 +17,7 @@ img_header={
     "Accept-Encoding":"gzip, deflate, sdch",
     "Accept-Language":'en-US,en;q=0.8',
     "Connection":"keep-alive",
-    "Cookie":"JSESSIONID=V28RYsLJyHGQddnY7Sgd3mh5N8tqrVpnhD8CCVQT2mL4hzDJwjyl!-836272584;",
+    "Cookie":"JSESSIONID=V2ZFs9TNx2yTdj5SJT3B7RL7DhlhVT7vjTQv4tQlkRppwLNBMn7x!-836272584; cck_lasttime=1430182306281; cck_count=2",
     "Host":"www.sccredit.gov.cn",
     "Referer":"http://www.sccredit.gov.cn/queryInfo.do?behavior=enterSearch&panel=corp",
     "User-Agent":"MoHozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/41.0.2272.76 Chrome/41.0.2272.76 Safari/537.36" 
