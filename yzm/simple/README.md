@@ -53,3 +53,11 @@
 		**doimg.py** <br>
 
 	这三个可以用在程序中去 使用了
+
+
+
+yun xing yang li
+python getimg.py
+python doimg.py
+python makeyzm.py
+python testyzm.py
