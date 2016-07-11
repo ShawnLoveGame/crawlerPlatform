@@ -55,7 +55,7 @@ def get_id_from_B(line_data):
 	#return line_data.strip().split('\t')[0]
 	return line_data.strip().split('\t',1)[0]
 	#return line_data.strip().split('\t',1)[1]
-	#return line_data.strip()
+	return line_data.strip()
 	#return line_data.strip()[-32:]
 
 # find A not in B   give the rest part of A
