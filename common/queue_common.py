@@ -51,7 +51,7 @@ def read_tool(fin, readlinef):
             put = 0
             for line in fin:
                 count = func(line, *args, **kwargs)
-                if count == None:
+                if count == None or count == True:
                     count = 1
                 if type(count) == int:
                     put += count
