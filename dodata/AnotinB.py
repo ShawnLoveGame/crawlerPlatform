@@ -8,9 +8,9 @@ import json
 #
 # find A not in B   give the rest part of A
 def get_id_from_A(line_data):
-	#return json.loads(line_data)['weibo']
-	#return line_data.strip()
+	return line_data.strip()
 	#return json.loads(line_data).get('id')
+	#return json.loads(line_data)['weibo']
 	#return line_data.strip().decode('utf-8')
 	#return json.loads(line_data)['name']
 	#return json.loads(line_data).get('item_id')
@@ -20,7 +20,7 @@ def get_id_from_A(line_data):
 	#return json.loads(line_data).get('search_unicode')
 	#return json.loads(line_data).get('unique')
 	#return json.loads(line_data).get('KeyNo')
-	return line_data.split('\t',1)[0]
+	#return line_data.split('\t',1)[0]
 	#return line_data.strip().split('\t',1)[1]
 	#return line_data.split('\t',1)[0]
 	#return json.loads(line_data).get('shop_id')
@@ -36,7 +36,7 @@ def get_id_from_B(line_data):
 	#return json.loads(line_data).get('brand_id')
 	#return json.loads(line_data).get('pi')
 	#return json.loads(line_data).get('urltail')
-	#return line_data.strip()
+	return line_data.strip()
 	#return line_data.strip()[-32:]
 	#return json.loads(line_data).get('uid')
 	#return json.loads(line_data).get('key')
@@ -53,9 +53,8 @@ def get_id_from_B(line_data):
 	#if uin!=None:uin=str(uin)
 	#return uin
 	#return line_data.strip().split('\t')[0]
-	return line_data.strip().split('\t',1)[0]
+	#return line_data.strip().split('\t',1)[0]
 	#return line_data.strip().split('\t',1)[1]
-	return line_data.strip()
 	#return line_data.strip()[-32:]
 
 # find A not in B   give the rest part of A
@@ -68,7 +67,7 @@ B_file=open(sys.argv[2],'r')
 output=open(sys.argv[3],'w')
 #one A is small 
 Asmall=False
-Asmall=True
+#Asmall=True
 if Asmall:
 	print 'b is too big'
 	for line_A in A_file:
