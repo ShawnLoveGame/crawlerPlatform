@@ -62,7 +62,6 @@ def get_start(text):
     ek = text.rfind('}')
     jdoc = json.loads(text[sk:ek+1])
     start = jdoc['defaultModel']['tradeResult']['startTime']
-
     return start
 
 
