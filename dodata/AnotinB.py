@@ -29,14 +29,10 @@ def get_id_from_A(line_data):
 
 def get_id_from_B(line_data):
 	#return line_data.strip().decode('utf-8')
-	#return json.loads(line_data).get('item_id')
-	#return json.loads(line_data).get('search_unicode')
-	#return json.loads(line_data)['weibo']
-	#return json.loads(line_data).get('user_id')
-	#return json.loads(line_data).get('brand_id')
-	#return json.loads(line_data).get('pi')
-	#return json.loads(line_data).get('urltail')
 	return line_data.strip()
+	#return line_data.strip().split('\t')[0]
+	#return line_data.strip().split('\t',1)[0]
+	#return line_data.strip().split('\t',1)[1]
 	#return line_data.strip()[-32:]
 	#return json.loads(line_data).get('uid')
 	#return json.loads(line_data).get('key')
@@ -49,13 +45,16 @@ def get_id_from_B(line_data):
 	#return json.loads(line_data).get('company_id')
 	#return json.loads(line_data).get('name')
 	#return json.loads(line_data).get('unique')
+	#return json.loads(line_data).get('item_id')
+	#return json.loads(line_data).get('search_unicode')
+	#return json.loads(line_data)['weibo']
+	#return json.loads(line_data).get('user_id')
+	#return json.loads(line_data).get('brand_id')
+	#return json.loads(line_data).get('pi')
+	#return json.loads(line_data).get('urltail')
 	#uin=json.loads(line_data).get('uin')
 	#if uin!=None:uin=str(uin)
 	#return uin
-	#return line_data.strip().split('\t')[0]
-	#return line_data.strip().split('\t',1)[0]
-	#return line_data.strip().split('\t',1)[1]
-	#return line_data.strip()[-32:]
 
 # find A not in B   give the rest part of A
 #like A=[1,2,4,5]
@@ -65,7 +64,8 @@ id_dict={}
 A_file=open(sys.argv[1],'r')
 B_file=open(sys.argv[2],'r')
 output=open(sys.argv[3],'w')
-#one A is small 
+
+#one A is small
 Asmall=False
 #Asmall=True
 if Asmall:
