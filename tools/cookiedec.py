@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #coding=utf-8
-#author@shibin
+#author@alingse
 
 import json
 import sys
