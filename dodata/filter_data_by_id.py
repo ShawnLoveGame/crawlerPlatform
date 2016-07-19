@@ -1,83 +1,184 @@
+#!/usr/bin/env python2.7
 #coding=utf-8
-#author@shibin
+#author@alingse
 #2014.11.08
-import sys
+
+from __future__ import print_function
+import argparse
+#import rapidjson as json
 import json
+import sys
 
-def get_id_from_id_data(id_data):
-	#return id_data.strip()
-	#return	id_data.split('\t',1)[0]
-	return json.loads(id_data).get('item_id')
-	#return 	json.loads(id_data).get('***')
-def get_id_from_result_data(result_data):
-	return result_data.split('\t',1)[0]
-	#return json.loads(result_data).get('***')
-
-def main():
-	id_f_name=sys.argv[1]
-	result_f_name=sys.argv[2]
-	filter_f_name=sys.argv[3]
-
-	id_dict={}
-	id_f=open(id_f_name,"r")
-	for line in id_f:
-		if line=="\n":
-			continue
-		item_id=get_id_from_id_data(line)
-		if item_id==None:
-			continue
-		id_dict[item_id]=0
-	id_f.close()
-	got_id_num=len(id_dict.keys())
-	print "got_id:",got_id_num
-
-	result_f=open(result_f_name,"r")
-	filter_f=open(filter_f_name,"w")
-	count=0
-	for result_line in result_f:
-		count+=1
-		if result_line=="\n":
-			continue
-		r_item_id=get_id_from_result_data(result_line)
-		#print r_item_id
-		#print result_line
-		#raw_input(':')
-		if r_item_id==None:
-			continue
-		if not id_dict.has_key(r_item_id):
-			continue
-		if id_dict[r_item_id]==1:
-			continue
-		filter_f.write(result_line)
-		id_dict[r_item_id]=1
-		if count%1000==1:
-			print 'filter 1k data'
-
-	result_f.close()
-	filter_f.close()
-	got_result_num=sum(id_dict.values())
-	print "not get:",got_id_num-got_result_num
-	
-	if got_id_num==got_result_num:
-		return 	
-	if len(sys.argv)==4:
-		return
-		
-	no_result_id_fname=sys.argv[4]
-	no_result_id_f=open(no_result_id_fname,'w')
-	id_f=open(id_f_name,"r")
-	for line in id_f:
-		if line=="\n":
-			continue
-		item_id=get_id_from_id_data(line)	
-		if item_id==None:
-			continue
-		if id_dict[item_id]==0:
-			no_result_id_f.write(line)
-	no_result_id_f.close()
-	id_f.close()
-
-if __name__=="__main__":
-	main()
+log = print
 
 
+def get_id_from_id_line(id_line):
+    return id_line.strip()
+    #return id_line.strip().decode('utf-8')
+    #return id_line.strip()[-32:]
+    #return id_line.split('\t',1)[0]
+    #return id_line.split('\t',1)[1]
+    #return id_line.strip().split('\t', 1)[1]
+    #return id_line.split(' ',1)[0]
+    #return json.loads(id_line).get('item_id')
+    #return json.loads(id_line).get('unique')
+    #return json.loads(id_line).get('name').decode('utf-8')
+    #return json.loads(id_line).get('weibo')
+    #result = json.loads(id_line)
+    #return result['feed_id']+'ID'+result['datenow']
+    #return json.loads(id_line).get('shop_id')
+
+
+    #import re
+    #weibofinder=re.compile('"weibo": "([^"]+)"').findall
+def get_id_from_data_line(data_line):
+    """
+    try:
+        data=json.loads(data_line)
+        return data.get("data").get("itemInfoModel").get("itemId")         
+    except:
+        return None
+    """
+    #result = json.loads(data_line)
+    #return result['feed_id']+'ID'+result['datenow']
+    #return result['start']+result['end']+result['key']
+    return data_line.strip()
+    #return data_line.strip()[-32:]
+    #return data_line.split('\t',1)[0]
+    #return data_line.split('\t',2)[1]
+    #return data_line.split('\t')[1]
+    #return data_line.split('\t')[0]
+    #return data_line.strip().split('\t')[2]
+    #return data_line.strip().split('\t')[1]
+    #return data_line.split(' ')[1]
+    #return data_line.split(' ',1)[0]
+    #return data_line.split(',',1)[0]
+    #return data_line.split('\t')[1].strip()
+    #return weibofinder(data_line[:300])[0]
+    #return str(json.loads(data_line).get('uin'))
+    #return str(json.loads(data_line).get('cat_id'))
+    #return json.loads(data_line).get('shop_id')
+    #return json.loads(data_line).get('id')[-32:]
+    #return json.loads(data_line).get('unique')
+    #return json.loads(data_line).get('company_id')[-32:]
+    #return json.loads(data_line).get('KeyNo')
+    #return json.loads(data_line).get('category')
+    #return json.loads(data_line).get('name').decode('utf-8')
+    #return json.loads(data_line).get('ent_name').decode('utf-8')
+    #return json.loads(data_line).get('id')
+    #return json.loads(data_line).get('wb')
+    #return json.loads(data_line).get('weibo')
+    #return str(json.loads(data_line).get('item_id'))
+    #return json.loads(data_line).get('seller_id')
+    #return json.loads(data_line).get('item_id')
+    #return json.loads(data_line).get('nid')
+    #return json.loads(data_line).get('feed_id')
+    #return json.loads(data_line).get('item_info',{}).get('item_id')
+    #return json.loads(data_line).get('item_info',{}).get('category_id')
+    #return json.loads(data_line).get('guid')
+    #return json.loads(data_line).get('uid')
+    #return str(json.loads(data_line).get('brandId'))
+
+
+def load_id_dict(idfd):
+    id_dict = {}
+    for id_line in idfd:
+        if id_line == "\n":
+            continue
+        _id = get_id_from_id_line(id_line)
+        if _id != None:
+            id_dict[_id] = 0
+    return id_dict
+
+
+def filter_data(id_dict, id_ct, datafd, outfd, multi=False):
+    hit = 0
+    ct = 0
+    for data_line in datafd:
+        ct += 1
+        if data_line == '\n':
+            continue
+        _id = get_id_from_data_line(data_line)
+        if _id == None:
+            continue
+        if _id not in id_dict:
+            continue
+        #multi data share one id
+        if multi == False:
+            if id_dict[_id] == 1:
+                continue
+        if id_dict[_id] == 0:
+            id_dict[_id] = 1
+            hit += 1
+        outfd.write(data_line)
+        if hit == id_ct:
+            break
+
+        #for log
+        if ct % 1000 == 0:
+            log('id:{},visit data:{} hit:{}'.format(id_ct, data_ct, hit))
+    log('id:{} hit:{} notin:{}'.format(id_ct, hit, (id_ct - hit)))
+    return hit
+
+
+def dump_notin(idfd, id_dict, notinfd):
+    for id_line in idfd:
+        if id_line == "\n":
+            continue
+        _id = get_id_from_id_line(id_line)
+        if _id != None:
+            if id_dict[_id] == 0:
+                notinfd.write(id_line)
+
+
+def main(idf, dataf, outf, notinf, multi=False):
+    idfd = open(idf, 'r')
+
+    id_dict = load_id_dict(idfd)
+
+    idfd.close()
+
+    id_ct = len(id_dict)
+    log("got id count: {}".format(id_ct))
+
+    datafd = open(dataf, 'r')
+    outfd = open(outf, 'w')
+
+    hit = filter_data(id_dict, id_ct, datafd, outfd, multi=multi)
+
+    datafd.close()
+    outfd.close()
+
+    if hit == id_ct:
+        return True
+    if notinf == None:
+        return None
+
+    log('dump the notin id file')
+
+    idfd = open(idf, 'r')
+    notinfd = open(notinf, 'w')
+    dump_notin(idfd, id_dict, notinfd)
+    idfd.close()
+    notinfd.close()
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('idf', help='id file')
+    parser.add_argument('dataf', help='data file')
+    parser.add_argument('outf', help='filter data file')
+    parser.add_argument('notinf', nargs='?', help='notin id file')
+    parser.add_argument('-m',
+                        '--multi',
+                        action='store_true',
+                        help='multi data share one id')
+    args = parser.parse_args()
+    log(args)
+
+    idf = args.idf
+    dataf = args.dataf
+    outf = args.outf
+    notinf = args.notinf
+    multi = args.multi
+    main(idf, dataf, outf, notinf, multi=multi)
