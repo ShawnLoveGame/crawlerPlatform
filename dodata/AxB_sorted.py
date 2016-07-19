@@ -70,7 +70,7 @@ class  SoredFile(object):
 		raise Exception("no line data has been read")
 
 	def read(self):
-		#只有 未读完关闭、并需要读、才去读
+		#只有 未读完关闭、并需要读、才去读,读完设置need_readd 为False
 		if self.closed == False and self._need_read == True:
 			close,data = self.read_f(self.f)
 			self.closed = close
@@ -94,10 +94,10 @@ def operat(f_A,f_B,outputs,direct = ASC):
 
 		if not close_A and not close_B:
 			AcmpB = compare(sf_A.get_compare(),sf_B.get_compare())
-
 			if AcmpB == 0:
 				writes = Equal_writes
 			else:
+				#sort direct and cmp result --> choose which writes
 				if (AcmpB == -1 and direct == ASC) or \
 					(AcmpB == 1 and direct == DESC):
 					writes = A_writes
@@ -111,22 +111,17 @@ def operat(f_A,f_B,outputs,direct = ASC):
 			break
 
 
-		if writes == A_writes:
+		if writes is A_writes :
 			out = sf_A.get_line()
 		else:
 			out = sf_B.get_line()
 
 		write_out(out,writes,outputs)
 
-		if writes == A_writes:
+		if writes is A_writes or writes is Equal_writes:
 			sf_A.need_read()
-		elif writes == B_writes:
+		if writes is B_writes or writes is Equal_writes:
 			sf_B.need_read()
-		elif writes == Equal_writes:
-			sf_A.need_read()
-			sf_B.need_read()
-
-
 
 
 
@@ -140,16 +135,13 @@ if __name__=="__main__":
 	parser.add_argument('--A_B',help='sorted:file A - sorted:file B',action='store')
 	parser.add_argument('--B_A',help='sorted:file B - sorted:file A',action='store')
 	parser.add_argument('-o','--OR','--or',help='set A | set B',action='store')	
-	parser.add_argument('-d','--direct',help='direct must be ASC or DESC',default=ASC,choices=[ASC,DESC],action='store')
+	parser.add_argument('-d','--direct',help='direct must be ``ASC`` or ``DESC`` ',default=ASC,choices=[ASC,DESC],action='store')
 	args = parser.parse_args()
 
 	f_a = open(args.A,'r')
 	f_b = open(args.B,'r')
 
 	direct = args.direct.upper()
-	if direct not in directs:
-		print('direct error')
-		exit()
 
 	outputs = [args.AND,args.OR,args.xor,args.A_B,args.B_A]
 	for i in range(len(outputs)):
