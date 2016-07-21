@@ -5,6 +5,7 @@
 import requests
 import commands
 import argparse
+import uuid
 import time
 import os
 
@@ -81,16 +82,17 @@ def js_encrypt(string,jshell='node'):
         }
         '''
 
-    jspath = '{}/{}'.format(basepath,'login.js')
+    jspath = '{}/login.{}.js'.format(basepath,str(uuid.uuid1()))
     with open(jspath,'w') as fout:
         fout.write(basejs)
         fout.write(encjs)
         fout.write(printjs)
 
     _pwd = commands.getoutput(jshell + ' ' +jspath)
-    with open(jspath,'w') as fout:
+    try:
+        commands.getoutput('rm '+jspath)
+    except Exception as e:
         pass
-
     return _pwd
 
 
@@ -199,7 +201,7 @@ def baidu_login(session,username,password,jshell='node'):
     goto_url = jdoc['data']['gotoUrl']
     visit_url(session,goto_url)
     content = visit_url(session,home_url)
-    print(content)
+    #print(content)
 
     dump_cookies(session.cookies.get_dict(),cookief=cookief)
     return True
