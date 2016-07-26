@@ -42,7 +42,7 @@ def readline(line, inq=None, **kwargs):
     inq.put((a, b))
 
 
-def writeout(out, fout, inq=None):
+def writeout(out, fout, inq=None,**kwargs):
     doc, result = out
     fout[0] += result
     return True
