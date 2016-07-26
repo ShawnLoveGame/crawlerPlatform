@@ -44,6 +44,48 @@ def expand_json(json_obj, head = None):
    
 
 def contract_json(exp_obj):
+
+    def new(keys,value):
+        if len(keys) == 0:
+            return value
+        key = keys[0]
+        _doc = newone(keys[1:],value)
+        if key == '':
+            doc = _doc
+        #means list
+        if key.isdigit():
+            doc = [(int(key),_doc)]
+        else:
+            doc = {
+                key:_doc
+            }
+        return doc
+    #key
+    def find(key,doc=None):
+        if doc == None:
+            return False,None
+        if key.isdigit():
+            if type(doc) != list:
+                raise Exception('number key must use for list')
+            for idoc in doc:
+                if int(key) == idoc[0]:
+                    return True,idoc[1]
+            return False,None
+        else:
+            if type(doc) != dict:
+                raise Exception('string key only find in doc')
+            if key in doc:
+                return True,doc[key]
+            return False,None
+
+
+        #if type(doc)
+
+    #
+    def update(keys,value,doc):
+        pass
+
+
     '''
     json_obj = {}
     for key in exp_obj:
@@ -76,6 +118,8 @@ if __name__ == '__main__':
         demo(d1,expand_json)
         d2 = [{'1':{'s':[1,2,{'t':[3,{'w':1}]},{'w':1}]}}]
         demo(d2,expand_json)
+        d3 = 'sss'
+        demo(d3,expand_json)
 
         exit()
     else:
