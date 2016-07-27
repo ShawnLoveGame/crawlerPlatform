@@ -3,147 +3,141 @@
 #author@alingse
 #2016.05.27
 
-from __future__ import print_function
+from itertools import groupby
+from operator import itemgetter
 import json
 import argparse
 import sys
 
 
-def expand_json(json_obj, head = None):
-    exp_obj = {}
-    if type(json_obj) == dict:
-        for key in json_obj:
+def expand(origin):
+    #gen net obj keys
+    def gen_next(obj,head=None):
+        exp = {}
+        if type(obj) == dict:
+            for key in obj:
+                if head == None:
+                    k_head = key
+                else:
+                    k_head = '{}.{}'.format(head,key)
+
+                k_obj = obj[key]
+                k_exp = gen_next(k_obj, head=k_head)
+                exp.update(k_exp)
+        elif type(obj) == list:
+            for i,i_obj in enumerate(obj):
+                if head == None:
+                    #this is important,so the json forbidden number key
+                    i_head = str(i)
+                else:
+                    i_head = '{}.{}'.format(head,i)
+
+                i_exp = gen_next(i_obj, head=i_head)
+                exp.update(i_exp)
+        else:
             if head == None:
-                k_head = key
-            else:
-                k_head = '{}.{}'.format(head,key)
+                head = ''
 
-            k_obj = json_obj[key]
-            k_exp_obj = expand_json(k_obj,head = k_head)
-            exp_obj.update(k_exp_obj)
+            value = obj
+            _exp = {head:value}
 
-    elif type(json_obj) == list:
-        for i in range(len(json_obj)):
-            if head == None:
-                i_head = str(i)
-            else:
-                i_head = '{}.{}'.format(head,i)
+            exp.update(_exp)
 
-            i_obj = json_obj[i]
-            i_exp_obj = expand_json(i_obj,head = i_head)
-            exp_obj.update(i_exp_obj)
+        return exp
 
-    else:
-        if head == None:
-            head = ''
-
-        value = json_obj
-        exp_obj[head] = value
-
-    return exp_obj
+    expobj = gen_next(origin,head=None)
+    return expobj
    
 
-def contract_json(exp_obj):
+def restore(expobj):
 
-    def new(keys,value):
-        if len(keys) == 0:
-            return value
-        key = keys[0]
-        _doc = newone(keys[1:],value)
-        if key == '':
-            doc = _doc
-        #means list
-        if key.isdigit():
-            doc = [(int(key),_doc)]
+    def from_child(res_list):
+        keys_list,values=zip(*res_list)
+        N = len(keys_list)
+        #the break
+        #this group only one
+        if N == 1:
+            if keys_list[0] == []:
+                #return the value
+                return values[0]
+            #for single string obj
+            elif keys_list[0][0] == '':
+                return values[0]
+
+        key_list = [keys.pop(0) for keys in keys_list]
+        #应该还有其他的检查 assert 等。raise Exception
+
+        zlist = zip(key_list,keys_list,values)
+        sort_zlist = sorted(zlist,key=itemgetter(0))
+        glist = groupby(sort_zlist,itemgetter(0))
+
+        #check for digit
+        digit_list = filter(lambda x:x.isdigit(),key_list)
+        #this is an array
+        if len(digit_list) == N:
+            doc = []
+        elif len(digit_list) == 0:
+            doc = {}
         else:
-            doc = {
-                key:_doc
-            }
+            raise Exception('number can not be a key')
+
+        for g in glist:
+            key,_zlist = g
+            #机智,我真是太机智了
+            _res_list = map(itemgetter(1,2),_zlist)
+            _doc = from_child(_res_list)
+            if type(doc) == list:
+                doc.append((int(key),_doc))
+            elif type(doc) == dict:
+                doc[key] = _doc
+
+        if type(doc) == list:
+            #sort by index(the key)
+            sort_tmp = sorted(doc,key=itemgetter(0))
+            #get list doc
+            doc = map(itemgetter(1),sort_tmp)
+        
         return doc
-    #key
-    def find(key,doc=None):
-        if doc == None:
-            return False,None
-        if key.isdigit():
-            if type(doc) != list:
-                raise Exception('number key must use for list')
-            for idoc in doc:
-                if int(key) == idoc[0]:
-                    return True,idoc[1]
-            return False,None
-        else:
-            if type(doc) != dict:
-                raise Exception('string key only find in doc')
-            if key in doc:
-                return True,doc[key]
-            return False,None
 
-
-        #if type(doc)
-
-    #
-    def update(keys,value,doc):
-        pass
-
-
-    '''
-    json_obj = {}
-    for key in exp_obj:
-        value = exp_obj[key]
+    res_list = []
+    for key,value in expobj.items():
         keys = key.split('.')
-        this = json_obj
-        for ikey in keys:
-            if ikey.isdigit():
-                pass
-    '''
-    return exp_obj
+        res_list.append((keys,value))
+
+    origin = from_child(res_list)
+    return origin
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-e','--expand',action='store_true',help='choose `expand` a json')
-    parser.add_argument('-c','--contract',action='store_true',help='choose `expand` a json')
-    parser.add_argument('--demo',action='store_true',help='show some test demo')
+    parser.add_argument('-r','--restore',action='store_true',help='choose `contract` a ｀expanded` json')    
     parser.add_argument('-o','--output',help='file for output, default is stdout')
     parser.add_argument('input', nargs='?', help='input file, default is stdin')
     args = parser.parse_args()
 
-    if args.demo:
-        def demo(d,func,log=print):
-            log('this obj :')
-            log(d)
-            log('apply `{}` will change to'.format(func.__name__))
-            log(func(d))
-        d1 = {'s':{'w':[1,2,3,{'t':5}]}}
-        demo(d1,expand_json)
-        d2 = [{'1':{'s':[1,2,{'t':[3,{'w':1}]},{'w':1}]}}]
-        demo(d2,expand_json)
-        d3 = 'sss'
-        demo(d3,expand_json)
-
+    if args.expand == args.restore:
+        print('can not choose two or choose none')
         exit()
+
+    if args.output != None:
+        fout = open(args.output,'w')
     else:
-        if args.output != None:
-            fout = open(args.output,'w')
-        else:
-            fout = sys.stdout
-        if args.input != None:
-            fin = open(args.input,'r')
-        else:
-            fin = sys.stdin
+        fout = sys.stdout
+    if args.input != None:
+        fin = open(args.input,'r')
+    else:
+        fin = sys.stdin
         
-        if args.expand == args.contract:
-            print('can not choose two or choose none')
-            exit()
-        if args.expand:
-            func = expand_json
-        if args.contract:
-            func = contract_json
-        for line in fin:
-            obj = json.loads(line)
-            new = func(obj)
-            out = json.dumps(new,ensure_ascii=False).encode('utf-8')
-            fout.write(out)
-            fout.write('\n')
 
-        exit()
+    if args.expand:
+        func = expand
+    if args.restore:
+        func = restore
+
+    for line in fin:
+        obj = json.loads(line)
+        new = func(obj)
+        out = json.dumps(new,ensure_ascii=False).encode('utf-8')
+        fout.write(out)
+        fout.write('\n')
