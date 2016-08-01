@@ -46,7 +46,7 @@ def truncate_tail(file,number,size=1024):
 
             #lines
             count = len(lines)
-            print(count)
+
             if count <= number:
                 number = number - count
                 end = end - size
