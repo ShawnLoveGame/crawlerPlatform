@@ -19,7 +19,9 @@ def truncate_tail(file,number,size=10240,nothalf=False,test=False):
 
         #only patch the last line
         last = True
-        while end >0 and number > 0:
+        #read to next line
+        next_size = 0
+        while end >0 and number > -1:
             if end < size:
                 size = end
 
@@ -48,29 +50,38 @@ def truncate_tail(file,number,size=10240,nothalf=False,test=False):
             #lines
             count = len(lines)
 
-            if count <= number:
+            #
+            if count < number:
                 number = number - count
                 end = end - size
                 #seek back -- read把指针移走了了
                 f.seek(-1*size, os.SEEK_CUR)
             else:
                 #pop number lines
-                for i in range(number):
-                    lines.pop()
+                if number > 0:
+                    for i in range(number):
+                        lines.pop()
+                    number = 0
+                    next_size = 0
 
-                back_data = '\n'.join(lines)+'\n'
-                pop_size = size - len(back_data)
+                if number == 0:
+                    if lines != []:
+                        back_data = '\n'.join(lines)+'\n'
+                        pop_size = size - len(back_data)
+                        f.seek(-1*pop_size, os.SEEK_CUR)
+                        end = end - pop_size
+                        number = -1
+                    else:
+                        end = end - size
+                        f.seek(-1*size, os.SEEK_CUR)
 
-                #seek back from the read
-                #seek back -- read把指针移走了了
-                f.seek(-1*pop_size, os.SEEK_CUR)
-                end = end - pop_size
-                number = 0
+                
+
 
         if end == 0 and number >= 0:
             print("No change: requested removal would leave empty file: {} bytes,{} lines".format(_end,_number - number))
             return 3
-        if end >0 and number == 0:
+        if end > 0 and number == -1:
             if test:                
                 print("will Remove {} lines && {} bytes from end of file".format(_number,_end - end))
             else:
