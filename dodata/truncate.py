@@ -29,7 +29,6 @@ def truncate_tail(file,number,size=10240,nothalf=False,test=False):
 
         #only patch the last line
         last = True
-
         while end >0 and number > -1:
             if end < size:
                 size = end
@@ -41,15 +40,11 @@ def truncate_tail(file,number,size=10240,nothalf=False,test=False):
             #seek back after every time read -- read把指针移走了了
             end = end - size
             f.seek(-1*size, os.SEEK_CUR)
-
             
             lines = data.split('\n')
-                         
-            '''
             #'wwww\nsfds\nss\nwww' --> ['wwww','sfds','ss','www']
             #通常lines最后一个半行应该算到上一次读的那一行里面,所以应该去掉
             #但是文件末尾这一个半行也算做一行,因此这里有一个patch
-            '''
             if last is False:
                 lines.pop()
             else:
@@ -62,10 +57,8 @@ def truncate_tail(file,number,size=10240,nothalf=False,test=False):
                     lines.pop()
                 last = False
 
-            
             count = len(lines)
             if number > count:
-                #lines = [] && number !=0 
                 number = number - count
             else:
                 for i in range(number):
@@ -78,7 +71,6 @@ def truncate_tail(file,number,size=10240,nothalf=False,test=False):
                 end = end + back_size
                 f.seek(back_size, os.SEEK_CUR)
                 number = -1
-
 
         if end == 0 and number >= 0:
             print("No change: requested removal would leave empty file: {} bytes,{} lines".format(_end,_number - number))
