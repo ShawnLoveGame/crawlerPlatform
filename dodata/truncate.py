@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 #coding=utf-8
-#the raw copy from web
+#the raw copy from stackoverflow
 #author@alingse
 #2016.08.1
 
@@ -8,6 +8,16 @@ from __future__ import with_statement
 
 import argparse
 import os
+
+def bigger(x,y):
+    if x > y:
+        return x
+    raise Exception("the input must bigger than "+str(y))
+
+#unsinged int
+uint = lambda x:bigger(int(x),-1)
+#positive integers
+pint = lambda x:bigger(int(x),0)
 
 def truncate_tail(file,number,size=10240,nothalf=False,test=False):
     with open(file,'r+b') as f:
@@ -85,8 +95,8 @@ def truncate_tail(file,number,size=10240,nothalf=False,test=False):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('file', help='the file to truncate')
-    parser.add_argument('number',type=int,help='line number to truncate')
-    parser.add_argument('-s','--size',type=int,default=10240,help='read buffer size in byte')
+    parser.add_argument('number',type=uint,help='line number to truncate')
+    parser.add_argument('-s','--size',type = pint,default=10240,help='read buffer size in byte')
     parser.add_argument('--nothalf',default=False,action='store_true',help='check the last line is half line')
     parser.add_argument('--test',action='store_true',help='just test and will not truncate it(help you find the right size)')
     args = parser.parse_args()
