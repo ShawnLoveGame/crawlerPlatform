@@ -19,17 +19,18 @@ def truncate_tail(file,number,size=10240,nothalf=False,test=False):
 
         #only patch the last line
         last = True
-        #read to next line
-        next_size = 0
+
         while end >0 and number > -1:
             if end < size:
                 size = end
 
+            #seek and read data block
             f.seek(-1*size, os.SEEK_CUR)
-            #data block
             data = f.read(size)
+
             lines = data.split('\n')
             
+            #check last line            
             #'wwww\nsfds\nss\nwww'
             #['wwww','sfds','ss','www']
             #通常lines最后一个半行应该算到上一次读的那一行里面,所以应该去掉
@@ -47,35 +48,26 @@ def truncate_tail(file,number,size=10240,nothalf=False,test=False):
                     lines.pop()
                 last = False
 
-            #lines
+            #find the break
             count = len(lines)
-
-            #
-            if count < number:
-                number = number - count
-                end = end - size
-                #seek back -- read把指针移走了了
-                f.seek(-1*size, os.SEEK_CUR)
+            if number <= count:
+                for i in range(number):
+                    lines.pop()
+                number = number - number
             else:
-                #pop number lines
-                if number > 0:
-                    for i in range(number):
-                        lines.pop()
-                    number = 0
-                    next_size = 0
+                #just sub it without pop
+                number = number - count
+            #every time read
+            #seek back -- read把指针移走了了
+            end = end - size
+            f.seek(-1*size, os.SEEK_CUR)
 
-                if number == 0:
-                    if lines != []:
-                        back_data = '\n'.join(lines)+'\n'
-                        pop_size = size - len(back_data)
-                        f.seek(-1*pop_size, os.SEEK_CUR)
-                        end = end - pop_size
-                        number = -1
-                    else:
-                        end = end - size
-                        f.seek(-1*size, os.SEEK_CUR)
-
-                
+            if number == 0 and lines != []:
+                back_data = '\n'.join(lines)+'\n'
+                back_size = len(back_data)
+                end = end + back_size
+                f.seek(back_size, os.SEEK_CUR)
+                number = -1
 
 
         if end == 0 and number >= 0:
