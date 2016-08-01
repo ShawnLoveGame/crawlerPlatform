@@ -3,7 +3,6 @@
 
 import requests
 import sys
-import re
 
 
 def get_ip_tencent():
@@ -21,7 +20,7 @@ def get_ip_tencent():
         return ip,pos
     except Exception as e:
         pass
-    return ''
+    return '',''
 
 if __name__ == "__main__":
     ip,pos = get_ip_tencent()
