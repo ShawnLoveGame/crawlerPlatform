@@ -37,40 +37,40 @@ def truncate_tail(file,number,size=10240,nothalf=False,test=False):
             #seek and read data block
             f.seek(-1*size, os.SEEK_CUR)
             data = f.read(size)
+        
+            #seek back after every time read -- read把指针移走了了
+            end = end - size
+            f.seek(-1*size, os.SEEK_CUR)
 
-            lines = data.split('\n')
             
-            #check last line            
-            #'wwww\nsfds\nss\nwww'
-            #['wwww','sfds','ss','www']
+            lines = data.split('\n')
+                         
+            '''
+            #'wwww\nsfds\nss\nwww' --> ['wwww','sfds','ss','www']
             #通常lines最后一个半行应该算到上一次读的那一行里面,所以应该去掉
             #但是文件末尾这一个半行也算做一行,因此这里有一个patch
-            if not last:
+            '''
+            if last is False:
                 lines.pop()
             else:
                 #last line is half line
-                if data[-1] != '\n' and nothalf:
+                if nothalf and data[-1] != '\n':
                     print('last line if half line ! (not end with \'\n\' )')
                     return 2
-                #last line in a completed line
-                #pop the [....,'']
+
                 if data[-1] == '\n':
                     lines.pop()
                 last = False
 
-            #find the break
+            
             count = len(lines)
-            if number <= count:
+            if number > count:
+                #lines = [] && number !=0 
+                number = number - count
+            else:
                 for i in range(number):
                     lines.pop()
                 number = number - number
-            else:
-                #just sub it without pop
-                number = number - count
-            #every time read
-            #seek back -- read把指针移走了了
-            end = end - size
-            f.seek(-1*size, os.SEEK_CUR)
 
             if number == 0 and lines != []:
                 back_data = '\n'.join(lines)+'\n'
