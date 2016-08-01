@@ -9,7 +9,7 @@ from __future__ import with_statement
 import os, sys
 
 
-def truncate_tail(file,number,size=1024):
+def truncate_tail(file,number,size=10240):
 
     with open(file,'r+b') as f:
         #seek END
@@ -27,8 +27,6 @@ def truncate_tail(file,number,size=1024):
             f.seek(-1*size, os.SEEK_CUR)
             #data block
             data = f.read(size)
-            #seek back -- read把指针移回去了
-            f.seek(-1*size, os.SEEK_CUR)
             lines = data.split('\n')
             
 
@@ -50,17 +48,20 @@ def truncate_tail(file,number,size=1024):
             if count <= number:
                 number = number - count
                 end = end - size
+                #seek back -- read把指针移走了了
+                f.seek(-1*size, os.SEEK_CUR)
             else:
                 #pop number lines
                 for i in range(number):
                     lines.pop()
 
                 back_data = '\n'.join(lines)+'\n'
-                back_size = len(back_data)
+                pop_size = size - len(back_data)
 
-                #seek back
-                f.seek(back_size, os.SEEK_CUR)
-                end = end -size + back_size
+                #seek back from the read
+                #seek back -- read把指针移走了了
+                f.seek(-1*pop_size, os.SEEK_CUR)
+                end = end - pop_size
                 number = 0
 
         if end == 0 and number >= 0:
