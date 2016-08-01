@@ -6,11 +6,10 @@
 
 from __future__ import with_statement
 
-import os, sys
+import argparse
+import os
 
-
-def truncate_tail(file,number,size=10240):
-
+def truncate_tail(file,number,size=10240,nothalf=False,test=False):
     with open(file,'r+b') as f:
         #seek END
         f.seek(0, os.SEEK_END)
@@ -19,7 +18,7 @@ def truncate_tail(file,number,size=10240):
         _number = number
 
         #only patch the last line
-        last_patch = True
+        last = True
         while end >0 and number > 0:
             if end < size:
                 size = end
@@ -29,18 +28,22 @@ def truncate_tail(file,number,size=10240):
             data = f.read(size)
             lines = data.split('\n')
             
-
             #'wwww\nsfds\nss\nwww'
             #['wwww','sfds','ss','www']
             #通常lines最后一个半行应该算到上一次读的那一行里面,所以应该去掉
             #但是文件末尾这一个半行也算做一行,因此这里有一个patch
-            if not last_patch:
+            if not last:
                 lines.pop()
             else:
-                #文件末尾是完整行,会多出一个 [...,'']
+                #last line is half line
+                if data[-1] != '\n' and nothalf:
+                    print('last line if half line ! (not end with \'\n\' )')
+                    return 2
+                #last line in a completed line
+                #pop the [....,'']
                 if data[-1] == '\n':
                     lines.pop()
-                last_patch = False
+                last = False
 
             #lines
             count = len(lines)
@@ -68,18 +71,28 @@ def truncate_tail(file,number,size=10240):
             print("No change: requested removal would leave empty file: {} bytes,{} lines".format(_end,_number - number))
             return 3
         if end >0 and number == 0:
-            f.truncate()
-            print("Removed {} lines && {} bytes from end of file".format(_number,_end - end))
+            if test:                
+                print("will Remove {} lines && {} bytes from end of file".format(_number,_end - end))
+            else:
+                f.truncate()
+                print("Removed {} lines && {} bytes from end of file".format(_number,_end - end))
             return 0
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        print sys.argv[0] + ": Invalid number of arguments."
-        print "Usage: " + sys.argv[0] + " linecount filename"
-        print "to remove linecount lines from the end of the file"
-        exit(2)
-    number = int(sys.argv[1])
-    file = sys.argv[2]
-    truncate_tail(file,number)
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument('file', help='the file to truncate')
+    parser.add_argument('number',type=int,help='line number to truncate')
+    parser.add_argument('-s','--size',type=int,default=10240,help='read buffer size in byte')
+    parser.add_argument('--nothalf',default=False,action='store_true',help='check the last line is half line')
+    parser.add_argument('--test',action='store_true',help='just test and will not truncate it(help you find the right size)')
+    args = parser.parse_args()
+        
+    file = args.file
+    number = args.number
+    size = args.size
+    nothalf = args.nothalf
+    test = args.test
+    if test:
+        print('It\'s just a test')
+    truncate_tail(file,number,size=size,nothalf=nothalf,test=test)
