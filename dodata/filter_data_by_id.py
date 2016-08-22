@@ -42,9 +42,9 @@ def get_id_from_data_line(data_line):
     #result = json.loads(data_line)
     #return result['feed_id']+'ID'+result['datenow']
     #return result['start']+result['end']+result['key']
-    return data_line.strip()
+    #return data_line.strip()
     #return data_line.strip()[-32:]
-    #return data_line.split('\t',1)[0]
+    return data_line.split('\t',1)[0]
     #return data_line.split('\t',2)[1]
     #return data_line.split('\t')[1]
     #return data_line.split('\t')[0]
