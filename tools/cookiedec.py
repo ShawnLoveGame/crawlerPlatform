@@ -16,7 +16,7 @@ def dec_cookie(cookie_str):
     return cookies
 
 if __name__ == '__main__':
-    fname = 'requests.cookies'
+    fname = 'requests.cookie'
     lines = '''wbilang_10000=zh_CN;skey=@cOC3Yo1Rs;
         p_skey=-EVv0ccze1UhmBPy2WUt1zY7tVxux1O4af7rGeeqY5A_; 
         pt4_token=Dk6Juu5EnD8fWOce9SMpWOfL*vUkfdmuJ4H-qxvWz1A_; 
