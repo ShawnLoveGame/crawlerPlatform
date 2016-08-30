@@ -20,23 +20,24 @@ def get_detail(item_id = '525528798012'):
         "offlineShop": "false", 
         "queryMemberRight": "true", 
         "isUseInventoryCenter": "false", 
-        "isApparel": "false", 
-        "isSecKill": "true", 
-        "cachedTimestamp": now(), 
+        "isApparel": "true", 
+        "isSecKill": "false", 
+        "cachedTimestamp": now()-34000, 
         "isAreaSell": "false", 
         "isForbidBuyItem": "false", 
         "sellerPreview": "false", 
+        "isg2": "Ajw8S2QDRwplNXNXKxJ9-TiTDdz-JuBfITFcbBa9bScK4dxrPkWw77IRt75j\nName", 
         "isPurchaseMallPage": "false", 
         "cartEnable": "true", 
         "timestamp": now(), 
         "tryBeforeBuy": "false", 
         "showShopProm": "false", 
         "tmallBuySupport": "true", 
-        "addressLevel": "3", 
+        "addressLevel": "2", 
         "itemId": item_id, 
         "callback": "setMdskip", 
         "service3C": "false", 
-        #"isg": "An19DNx-2se7Vz3t4Ez-DKWWDcJ3FLFs"
+        "isg": "AvX1rWtgzU8NhD7gT4X2WVwChXuvV6mE"
     }
 
     headers = {
