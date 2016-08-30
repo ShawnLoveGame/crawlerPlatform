@@ -24,6 +24,10 @@ def run(doc,**kwargs):
         return False,None
     start = get_start(text)
     if start == False:
+        sleep_rand(1*60,2*60)
+        return False,None
+    if start == None:
+        sleep_rand(0,30)
         return False,None
     return True,start
 
