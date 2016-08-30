@@ -68,12 +68,13 @@ def get_start(text):
     ek = text.rfind('}')
     jcontent = text[sk:ek+1]
     #print(jcontent.encode('utf-8'))
-    try:
-        jdoc = json.loads(jcontent)
-        start = jdoc['defaultModel']['tradeResult']['startTime']
-    except Exception as e:
-        print(e,jcontent)
+
+    jdoc = json.loads(jcontent)
+    if jdoc.get('status') == 1111:
         return False
+    if jdoc.get('isSuccess') == None:
+        return None
+    start = jdoc['defaultModel']['tradeResult']['startTime']
     return start
 
 
