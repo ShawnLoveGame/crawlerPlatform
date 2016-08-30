@@ -6,9 +6,12 @@ import json
 import time
 import sys
 
-import requests.packages.urllib3.util.ssl_
-#print(requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS)
-requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
+try:
+    import requests.packages.urllib3.util.ssl_
+    #print(requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS)
+    requests.packages.urllib3.util.ssl_.DEFAULT_CIPHERS = 'ALL'
+except Exception as e:
+    pass
 
 now = lambda: int(1000*time.time())
 
