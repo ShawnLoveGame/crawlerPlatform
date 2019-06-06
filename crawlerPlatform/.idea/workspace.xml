@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d10e60cc-2ed1-4714-ad1a-48f58bf841b6" name="Default Changelist" comment="Update README.md">
-      <change afterPath="I:/DJANGOp/crawler/.idea/crawler.iml" afterDir="false" />
-      <change afterPath="I:/DJANGOp/crawler/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="I:/DJANGOp/crawler/.idea/misc.xml" afterDir="false" />
-      <change afterPath="I:/DJANGOp/crawler/.idea/modules.xml" afterDir="false" />
-      <change afterPath="I:/DJANGOp/crawler/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="d10e60cc-2ed1-4714-ad1a-48f58bf841b6" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,8 +93,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dataggregateDemo2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="5" selection-start-line="5" selection-end-line="5" />
+            <state relative-caret-position="746">
+              <caret line="173" column="13" selection-start-line="173" selection-start-column="13" selection-end-line="173" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -250,7 +244,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="148" />
     <option name="y" value="26" />
     <option name="width" value="1170" />
@@ -437,12 +431,20 @@
       <workItem from="1558917651192" duration="24975000" />
       <workItem from="1559003993413" duration="91719000" />
       <workItem from="1559522258775" duration="85158000" />
-      <workItem from="1559789728139" duration="744000" />
+      <workItem from="1559789728139" duration="1281000" />
     </task>
+    <task id="LOCAL-00001" summary="Update README.md">
+      <created>1559790584627</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1559790584627</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="227397000" />
+    <option name="totallyTimeSpent" value="227934000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -474,7 +476,8 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Update README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update README.md" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://F:/python/Lib/site-packages/requests/cookies.py">
@@ -698,8 +701,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dataggregateDemo2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        <state relative-caret-position="746">
+          <caret line="173" column="13" selection-start-line="173" selection-start-column="13" selection-end-line="173" selection-end-column="13" />
         </state>
       </provider>
     </entry>
