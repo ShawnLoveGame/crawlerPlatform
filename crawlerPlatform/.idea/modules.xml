@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://I:/DJANGOp/crawler/.idea/crawler.iml" filepath="I:/DJANGOp/crawler/.idea/crawler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/crawlerPlatform.iml" filepath="$PROJECT_DIR$/.idea/crawlerPlatform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../tianyancha/.idea/tianyancha.iml" filepath="$PROJECT_DIR$/../tianyancha/.idea/tianyancha.iml" />
+    </modules>
+  </component>
+</project>
