@@ -27,6 +27,7 @@ def tycCallback(rabbitMq, source, message):
     ty.run()
     # 告诉企业需求分析池
     priority = 10
+    print()
     if source == QueueEnum.QUEUE_PASS_BDREQ.getValue():
         rabbitMq.sendMessage(QueueEnum.QUEUE_PASS_BDRESP.getKey(), message, priority,
                              QueueEnum.QUEUE_CRAWLER_TYC.getValue())
